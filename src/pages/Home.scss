@@ -1,0 +1,41 @@
+.score-grid {
+  display: grid;
+  grid-template-columns: 90px 1fr repeat(5, 80px) 212px;
+  column-gap: 80px;
+  border-bottom: 3px solid #dcddde;
+}
+.round,
+.set,
+.game {
+  @apply uppercase font-medium pb-3;
+  font-size: calc(38rem / 16);
+  line-height: 1;
+}
+.flag {
+  width: 92px;
+  height: 53px;
+}
+.player-name {
+  font-size: calc(77rem / 16);
+}
+.set-score,
+.game-score {
+  font-weight: 800;
+  font-size: calc(184rem / 16);
+  letter-spacing: -1%;
+  position: relative;
+  span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+  }
+}
+.game-score {
+  color: black;
+  background-color: #fff200;
+}
+.time {
+  font-weight: 900;
+  font-size: calc(100rem / 16);
+}

@@ -1,23 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import { Route, Routes } from "react-router-dom";
+import "./App.css";
+import { MATCH_PAGE } from "./constants";
+import MainLayout from "./layouts/MainLayout";
+import Home from "./pages/Home";
+import Match from "./pages/Match";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Routes>
+        {/* <Route path={SIGNIN_PAGE} element={<SigninPage />} /> */}
+        <Route element={<MainLayout />}>
+          <Route index element={<Home />} />
+
+          <Route path={`${MATCH_PAGE}/:matchId`} element={<Match />} />
+        </Route>
+      </Routes>
     </div>
   );
 }
