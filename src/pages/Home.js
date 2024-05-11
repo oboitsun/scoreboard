@@ -3,7 +3,6 @@ import howden_logo from "../assets/howden-logo.svg";
 import lignator_logo from "../assets/lignator-logo.png";
 import PlayerRow from "../components/PlayerRow";
 import SetsRowControl from "../components/SetsRowControl";
-import TimeWatch from "../components/Time";
 import { supabase } from "../utils/supabase";
 import "./Home.scss";
 export default function Home() {
@@ -80,9 +79,7 @@ export default function Home() {
           <div className="mt-auto flex justify-between items-end">
             <div className="flex flex-col">
               <p className="uppercase font-medium text-4xl text-left"> MÄNGUAEG</p>
-              <div className="time">
-                <TimeWatch />
-              </div>
+              <div className="time">{/* <TimeWatch /> */}</div>
             </div>
             <div className="flex items-end gap-14">
               <img src={howden_logo} alt="howden" />
