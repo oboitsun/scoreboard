@@ -1,8 +1,10 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
+import { MATCH_PAGE } from "./constants/index";
+import ControlLayout from "./layouts/ControlLayout";
 import MainLayout from "./layouts/MainLayout";
 import Home from "./pages/Home";
-
+import Match from "./pages/Match";
 function App() {
   return (
     <div className="App">
@@ -13,9 +15,9 @@ function App() {
         </Route>
         {/* <Route index element={<FrameLayout />} /> */}
 
-        {/* <Route element={<ControlLayout />}>
+        <Route element={<ControlLayout />}>
           <Route path={`${MATCH_PAGE}/:matchId`} element={<Match />} />
-        </Route> */}
+        </Route>
       </Routes>
     </div>
   );
