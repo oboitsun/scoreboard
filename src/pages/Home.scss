@@ -34,6 +34,9 @@
 .game-score {
   color: black;
   background-color: #fff200;
+  &.gray {
+    background-color: #dcddde;
+  }
 }
 .time {
   font-weight: 900;

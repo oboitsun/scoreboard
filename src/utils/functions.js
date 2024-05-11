@@ -5,7 +5,6 @@ export const handleChangeServeState = (state, pair, player) => {
   const oldOtherPairState = state?.[`pair${otherPairIdx}`];
 
   return {
-    ...state,
     [`pair${pair}`]: {
       ...oldPairState,
       [`player${player}`]: { ...oldPairState?.[`player${player}`], serve: true },
@@ -18,3 +17,15 @@ export const handleChangeServeState = (state, pair, player) => {
     },
   };
 };
+export const handleNameChange = (pairState, pair, player, val) => ({
+  [`pair${pair}`]: {
+    ...pairState,
+    [`player${player}`]: { ...pairState?.[`player${player}`], name: val },
+  },
+});
+export const handleFlagChange = (pairState, pair, player, val) => ({
+  [`pair${pair}`]: {
+    ...pairState,
+    [`player${player}`]: { ...pairState?.[`player${player}`], country: val },
+  },
+});

@@ -62,8 +62,8 @@ export default function Home() {
             style={{ gridTemplateColumns: `90px 1fr repeat(${match?.sets?.length},80px) 212px` }}
             className="score-grid w-full min-h-[212px]">
             <div className="col-span-2 flex flex-col justify-center ">
-              <PlayerRow name={match?.pair1?.player1?.name} serve={match?.pair1?.player1?.serve} />
-              <PlayerRow name={match?.pair1?.player2?.name} serve={match?.pair1?.player2?.serve} />
+              <PlayerRow playerData={match?.pair1?.player1} />
+              <PlayerRow playerData={match?.pair1?.player2} />
             </div>
             <SetsRowControl sets={match?.sets} pair={1} disableControls />
             <div className="game-score">{match?.game_p1}</div>
@@ -72,11 +72,11 @@ export default function Home() {
             style={{ gridTemplateColumns: `90px 1fr repeat(${match?.sets?.length},80px) 212px` }}
             className="score-grid w-full min-h-[212px]">
             <div className="col-span-2 flex flex-col justify-center ">
-              <PlayerRow name={match?.pair2?.player1?.name} serve={match?.pair2?.player1?.serve} />
-              <PlayerRow name={match?.pair2?.player2?.name} serve={match?.pair2?.player2?.serve} />
+              <PlayerRow playerData={match?.pair2?.player1} />
+              <PlayerRow playerData={match?.pair2?.player2} />
             </div>
             <SetsRowControl sets={match?.sets} pair={2} disableControls />
-            <div className="game-score">{match?.game_p2}</div>
+            <div className="game-score gray">{match?.game_p2}</div>
           </div>
           <div className="mt-auto flex justify-between items-end">
             <div className="flex flex-col">
