@@ -21,22 +21,21 @@ export default function Home() {
     getTodos();
   }, []);
   useEffect(() => {
-    const channels = supabase
-      .channel("custom-filter-channel")
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "scoreboard", filter: "id=eq.1" },
-        (payload) => {
-          if (!payload.errors) {
-            setMatch(payload.new);
-          }
-        }
-      )
-      .subscribe();
-
-    return () => {
-      channels.unsubscribe();
-    };
+    // const channels = supabase
+    //   .channel("custom-filter-channel")
+    //   .on(
+    //     "postgres_changes",
+    //     { event: "*", schema: "public", table: "scoreboard", filter: "id=eq.1" },
+    //     (payload) => {
+    //       if (!payload.errors) {
+    //         setMatch(payload.new);
+    //       }
+    //     }
+    //   )
+    //   .subscribe();
+    // return () => {
+    //   channels.unsubscribe();
+    // };
   }, []);
   return (
     <div className="w-full flex flex-col pt-16 flex-grow">
