@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { supabase } from "../utils/supabase";
+// import { supabase } from "../utils/supabase";
 import "./Home.scss";
 export default function Home() {
   const [match, setMatch] = useState({});
   useEffect(() => {
-    async function getTodos() {
-      let { data: scoreboard, error } = await supabase.from("scoreboard").select("*");
-
-      console.log(scoreboard);
-      if (scoreboard.length > 0) {
-        setMatch(scoreboard[0]);
-      }
-    }
-
-    getTodos();
+    // async function getTodos() {
+    //   let { data: scoreboard, error } = await supabase.from("scoreboard").select("*");
+    //   console.log(scoreboard);
+    //   if (scoreboard.length > 0) {
+    //     setMatch(scoreboard[0]);
+    //   }
+    // }
+    // getTodos();
   }, []);
   useEffect(() => {
     // const channels = supabase
@@ -34,7 +32,7 @@ export default function Home() {
   }, []);
   return (
     <div className="w-full flex flex-col pt-16 flex-grow">
-      {match?.id && (
+      {true && (
         <>
           <div
             style={{ gridTemplateColumns: `90px 1fr repeat(${match?.sets?.length},80px) 212px` }}
