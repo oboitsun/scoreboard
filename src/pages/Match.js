@@ -226,7 +226,7 @@ export default function Match() {
         </div>
 
         <div className="score-grid w-full">
-          <div className="col-span-2 flex flex-col justify-center  ">
+          <div className="col-span-2 flex flex-col justify-center  max-w-lg">
             <PlayerRowControl
               handlePlayerNameChange={handlePlayerNameChange}
               handlePlayerServeChange={handlePlayerServeChange}
@@ -251,7 +251,7 @@ export default function Match() {
           <div className="game-score">{game_p1}</div>
         </div>
         <div className="score-grid w-full">
-          <div className="col-span-2 flex flex-col justify-center  ">
+          <div className="col-span-2 flex flex-col justify-center max-w-lg ">
             <PlayerRowControl
               handlePlayerNameChange={handlePlayerNameChange}
               handlePlayerServeChange={handlePlayerServeChange}
