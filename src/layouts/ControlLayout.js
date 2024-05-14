@@ -45,7 +45,6 @@ export default function ControlLayout() {
               </button>
 
               <p className="text-3xl text-red-600 uppercase font-medium absolute top-full translate-y-4 left-1/2 -translate-x-1/2 max-w-lg text-center">
-                {" "}
                 {error}
               </p>
             </form>

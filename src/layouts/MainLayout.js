@@ -9,10 +9,14 @@ export default function MainLayout() {
       <div className="w-[95%] relative z-10 py-16 flex flex-col h-1/2 flex-grow">
         <div className="w-full flex items-start justify-between">
           <div className="flex flex-col gap-2.5 items-start">
-            <p className="text-3xl font-bold">REEDE LAUPAEV, 31. MAI 1. JUUNI</p>
-            <h1 className="text-[100px] tracking-[-1%]">KAWE PADEL OPEN 2024</h1>
+            <p class="text-base lg:text-3xl font-bold leading-none">
+              REEDE LAUPAEV, 31. MAI 1. JUUNI
+            </p>
+            <h1 class="text-3xl lg:text-6xl xl:text-7xl 2xl:text-[100px] tracking-[-0.01em]  font-black">
+              KAWE PADEL OPEN 2024
+            </h1>
           </div>
-          <img className="" src={logo} />
+          <img class="competition-logo" src={logo} />
         </div>
         <Outlet></Outlet>
       </div>

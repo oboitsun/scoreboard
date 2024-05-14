@@ -1,29 +1,123 @@
+:root {
+  --margin-right-desk: 60px;
+  --margin-right-tablet: 40px;
+}
+html {
+  font-family: "Elza Trial", sans-serif;
+  color: white;
+}
+
+body {
+  min-height: 100vh;
+  width: 100%;
+  background-color: black;
+}
+
+.competition-logo {
+  width: 15vw;
+  max-width: 300px;
+}
+
+.wrapper {
+  width: 100%;
+  padding: 20px;
+  margin: 0 auto;
+}
+
+@media (min-width: 1600px) {
+  .wrapper {
+    padding: 66px;
+  }
+}
+
 .score-grid {
-  display: grid;
-  grid-template-columns: 90px 1fr repeat(5, 80px) 212px;
-  column-gap: 80px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   border-bottom: 3px solid #dcddde;
 }
+
+.score-grid > div:first-child {
+  width: 25%;
+  flex: 1 1 50%;
+  margin-right: var(--margin-right-mid);
+}
+
+.sets {
+  margin-left: auto;
+  display: flex;
+  min-width: max-content;
+  flex-shrink: 0;
+}
+
+.set,
+.set-score {
+  text-align: center;
+  flex-shrink: 0;
+  margin-right: 3vw;
+  width: 4vw;
+}
+
 .round,
 .set,
 .game {
-  @apply uppercase font-medium pb-3;
-  font-size: calc(38rem / 16);
-  line-height: 1;
+  @apply uppercase font-medium;
+  font-size: calc(0.5vw + 0.5vw);
 }
+
 .flag {
-  width: 92px;
-  height: 53px;
+  margin-right: 0.8vw;
+  width: 5vw;
+  max-width: 92px;
+  max-height: 53px;
 }
+
+.flag.not-picked {
+  background-color: #fff200;
+}
+
 .player-name {
-  font-size: calc(77rem / 16);
+  line-height: 1;
+  font-weight: 900;
+  font-size: calc(1rem + 1.5vw);
 }
+
+.serve {
+  margin-left: 0.5vw;
+  width: 2vw;
+  max-width: 40px;
+  height: 2vw;
+  max-height: 40px;
+}
+
+.serve.serve-active {
+  background: #fff200;
+}
+
+.game {
+  color: #fff200;
+}
+
+.game-score,
+.game {
+  flex-shrink: 0;
+  text-align: center;
+  overflow: hidden;
+  line-height: 1;
+  display: flex;
+  justify-content: center;
+  width: 12vw;
+}
+
 .set-score,
 .game-score {
   font-weight: 800;
-  font-size: calc(184rem / 16);
-  letter-spacing: -1%;
+  letter-spacing: -0.01em;
   position: relative;
+  line-height: 1;
+  font-size: calc(1rem + 9.5vw);
+
   span {
     position: absolute;
     top: 50%;
@@ -31,14 +125,152 @@
     transform: translateX(-50%) translateY(-50%);
   }
 }
+
 .game-score {
   color: black;
   background-color: #fff200;
-  &.gray {
-    background-color: #dcddde;
-  }
+  height: auto;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  display: flex;
 }
+
+.game-score.gray {
+  background-color: #dcddde;
+}
+
 .time {
   font-weight: 900;
-  font-size: calc(100rem / 16);
+}
+
+@media screen and (min-width: 768px) {
+  .set,
+  .set-score {
+    text-align: center;
+    flex-shrink: 0;
+    margin-right: 3vw;
+    width: 4vw;
+  }
+
+  .round,
+  .set,
+  .game {
+    @apply uppercase font-medium;
+    font-size: calc(1rem + 1.5vw);
+  }
+  .player-name {
+    line-height: 1;
+    font-weight: 900;
+    font-size: calc(1rem + 3.5vw);
+  }
+}
+
+@media screen and (min-width: 1000px) {
+}
+
+@media screen and (min-width: 1280px) {
+}
+
+@media screen and (min-width: 1600px) {
+  .score-grid {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 3px solid #dcddde;
+  }
+
+  .score-grid > div:first-child {
+    width: 25%;
+    flex: 1 1 50%;
+    margin-right: var(--margin-right-desk);
+  }
+
+  .sets {
+    margin-left: auto;
+    display: flex;
+    min-width: max-content;
+    flex-shrink: 0;
+  }
+
+  .set,
+  .set-score {
+    width: 76px;
+    text-align: center;
+    margin-right: var(--margin-right-desk);
+  }
+
+  .round,
+  .set,
+  .game {
+    @apply uppercase font-medium pb-3;
+    font-size: calc(38rem / 16);
+    line-height: 1;
+  }
+
+  .set {
+    width: 76px;
+  }
+
+  .player-name {
+    font-size: calc(77rem / 16);
+    line-height: 1;
+    font-weight: 900;
+  }
+
+  .serve.serve-active {
+    background: #fff200;
+  }
+
+  .game {
+    color: #fff200;
+  }
+
+  .game-score,
+  .game {
+    width: 212px;
+    flex-shrink: 0;
+    text-align: center;
+    overflow: hidden;
+    line-height: 1;
+    display: flex;
+    justify-content: center;
+  }
+
+  .set-score,
+  .game-score {
+    font-weight: 800;
+    font-size: calc(184rem / 16);
+    letter-spacing: -0.01em;
+    position: relative;
+    line-height: 1;
+
+    span {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+    }
+  }
+
+  .game-score {
+    color: black;
+    background-color: #fff200;
+    height: auto;
+    align-self: stretch;
+    display: flex;
+  }
+
+  .game-score.gray {
+    background-color: #dcddde;
+  }
+
+  .time {
+    font-weight: 900;
+    font-size: calc(100rem / 16);
+  }
+}
+
+@media screen and (min-width: 2560px) {
 }

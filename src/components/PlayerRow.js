@@ -5,9 +5,9 @@ import ServeRadio from "./ServeRadio";
 export default function PlayerRow({ playerData }) {
   const { country, name, serve } = playerData || {};
   return (
-    <div className="flex gap-6 items-center w-full uppercase">
+    <div className="player-row flex items-center w-full uppercase">
       <CountryFlagDisplay currentCountry={country} />
-      <p className="player-name">{name}</p>
+      <p className="player-name text-ellipsis whitespace-nowrap overflow-hidden">{name}</p>
       {serve && <ServeRadio serve={serve} handleClick={() => {}} />}
     </div>
   );

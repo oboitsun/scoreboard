@@ -1,7 +1,7 @@
-import { PlusIcon } from "@heroicons/react/16/solid";
 import { ArrowPathIcon } from "@heroicons/react/20/solid";
 import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import MatchControls from "../components/MatchControls";
 import PlayerRowControl from "../components/PlayerRowControl";
 import SetsRowControl from "../components/SetsRowControl";
 import { newMatch } from "../utils/dummyData";
@@ -68,6 +68,7 @@ export default function Match() {
     updateRow(newPairsState);
   };
   const handleSetScoreChange = (pair, operation) => {
+    resetGames();
     setMatch((prevMatch) => {
       const newSets = [...prevMatch.sets];
 
@@ -80,13 +81,15 @@ export default function Match() {
         if (lastSet.score && lastSet.score.length >= pair) {
           // Update the score for the specified pair
           lastSet.score[pair - 1] =
-            operation === "+" ? lastSet.score[pair - 1] + 1 : lastSet.score[pair - 1] - 1;
+            operation === "+"
+              ? lastSet.score[pair - 1] + 1
+              : Math.max(lastSet.score[pair - 1] - 1, 0);
 
           // Replace the last set with the updated set in the newSets array
           newSets[newSets.length - 1] = lastSet;
         }
       }
-      updateRow({ ...prevMatch, sets: newSets });
+      updateRow({ sets: newSets, game_p1: 0, game_p2: 0 });
 
       return { ...prevMatch, sets: newSets };
     });
@@ -131,13 +134,72 @@ export default function Match() {
     setMatch((prev) => ({ ...prev, round: val }));
     updateRow({ round: val });
   };
+  const resetGames = () => {
+    setGame_p1(0);
+    setGame_p2(0);
+  };
+
+  const updateMatch = (newSets) => {
+    setMatch((prev) => ({ ...prev, ...newSets }));
+    updateRow(newSets);
+  };
+
+  const handleMatchReset = () => {
+    const newMatchData = { ...newMatch };
+    resetGames();
+    setMatch(newMatchData);
+    updateRow(newMatchData);
+  };
+
+  const handleCreateNewSet = () => {
+    if (match?.sets?.length < 5) {
+      const newSet = { id: match?.sets?.length + 1, score: [0, 0] };
+      const newSets = {
+        sets: [...match.sets, newSet],
+        game_p1: 0,
+        game_p2: 0,
+      };
+      resetGames();
+      updateMatch(newSets);
+    }
+  };
+
+  const handleRemoveSet = () => {
+    if (match?.sets?.length > 1) {
+      const updatedSets = match.sets.slice(0, -1);
+      const newSets = {
+        sets: updatedSets,
+        game_p1: 0,
+        game_p2: 0,
+      };
+      resetGames();
+      updateMatch(newSets);
+    }
+  };
+  const handlePairGameScore = (pair, score) => {
+    const pairSetters = {
+      1: setGame_p1,
+      2: setGame_p2,
+    };
+    const oldGameStates = {
+      1: game_p1,
+      2: game_p2,
+    };
+    pairSetters?.[pair]((prev) => (score === 1 ? prev + 1 : score));
+    updateGameScore({ [`game_p${pair}`]: score === 1 ? oldGameStates?.[pair] + 1 : score });
+  };
+  const handleResetGameScore = () => {
+    resetGames();
+    updateGameScore({ game_p1: 0, game_p2: 0 });
+  };
+  const handleStopWatchAction = (action) => {
+    updateRow({ timer_status: action });
+    setMatch({ ...match, timer_status: action });
+  };
   return loaded ? (
     !error ? (
       <div className={`${match.id ? "opacity-100" : "opacity-0"} py-10 transition-all`}>
-        <div
-          style={{ gridTemplateColumns: `90px 1fr repeat(${match?.sets?.length},80px) 212px` }}
-          data-sets={match?.sets?.length}
-          className="score-grid w-full">
+        <div data-sets={match?.sets?.length} className="score-grid w-full">
           <div className="col-span-2 round max-w-xs  ">
             <input
               value={match?.round}
@@ -148,23 +210,23 @@ export default function Match() {
             />
           </div>
 
-          {[1, 2, 3, 4, 5].map((set, i) => {
-            const isExist = match?.sets?.[i]?.score;
-            return isExist ? (
-              <button key={set} className={`set`}>
-                set{set}
-              </button>
-            ) : (
-              <></>
-            );
-          })}
+          <div className="sets">
+            {[1, 2, 3, 4, 5].map((set, i) => {
+              const isExist = match?.sets?.[i]?.score;
+              return isExist ? (
+                <button key={set} className={`set`}>
+                  set{set}
+                </button>
+              ) : (
+                <></>
+              );
+            })}
+          </div>
           <div className="game">game</div>
         </div>
 
-        <div
-          style={{ gridTemplateColumns: `90px 1fr repeat(${match?.sets?.length},80px) 212px` }}
-          className="score-grid w-full min-h-[212px]">
-          <div className="col-span-2 flex flex-col justify-center max-w-[732px] ">
+        <div className="score-grid w-full">
+          <div className="col-span-2 flex flex-col justify-center  ">
             <PlayerRowControl
               handlePlayerNameChange={handlePlayerNameChange}
               handlePlayerServeChange={handlePlayerServeChange}
@@ -183,13 +245,13 @@ export default function Match() {
             />
           </div>
 
-          <SetsRowControl sets={match?.sets} pair={1} handleChange={handleSetScoreChange} />
+          <div className="sets">
+            <SetsRowControl sets={match?.sets} pair={1} handleChange={handleSetScoreChange} />
+          </div>
           <div className="game-score">{game_p1}</div>
         </div>
-        <div
-          style={{ gridTemplateColumns: `90px 1fr repeat(${match?.sets?.length},80px) 212px` }}
-          className="score-grid w-full min-h-[212px]">
-          <div className="col-span-2 flex flex-col justify-center max-w-[732px] ">
+        <div className="score-grid w-full">
+          <div className="col-span-2 flex flex-col justify-center  ">
             <PlayerRowControl
               handlePlayerNameChange={handlePlayerNameChange}
               handlePlayerServeChange={handlePlayerServeChange}
@@ -207,149 +269,21 @@ export default function Match() {
               pair={2}
             />
           </div>
-          <SetsRowControl sets={match?.sets} pair={2} handleChange={handleSetScoreChange} />
+          <div className="sets">
+            <SetsRowControl sets={match?.sets} pair={2} handleChange={handleSetScoreChange} />
+          </div>
+
           <div className="game-score gray">{game_p2}</div>
         </div>
-        <div className="grid grid-cols-2 gap-4 mt-4">
-          <div className="  w-full">
-            <div className="flex items-start gap-4 justify-between  *:uppercase">
-              {/* <button
-    onClick={async () => {
-      updateRow();
-    }}
-    className="text-5xl">
-    UPDATE
-  </button> */}
-              <div className="w-1/3 bg-white/10 p-3 rounded-xl">
-                <p className="text-4xl underline  mt-3 text-center">Debugging</p>
-                <button
-                  onClick={async () => {
-                    console.log(match);
-                  }}
-                  className="text-5xl ">
-                  show state
-                </button>
-              </div>
-              <div className="w-1/3 bg-white/10 p-3 rounded-xl flex flex-col ">
-                <p className="text-4xl underline mt-3 ">Match control</p>
-                <button
-                  onClick={() => {
-                    if (match?.sets?.length < 5) {
-                      setGame_p1(0);
-                      setGame_p2(0);
-                      setMatch({ ...newMatch });
-                      updateRow(newMatch);
-                    }
-                  }}
-                  className={`text-5xl`}>
-                  Reset Match
-                </button>
-              </div>
-              <div className="w-1/3 bg-white/10 p-3 rounded-xl flex flex-col hover:*:underline">
-                <p className="text-4xl underline mt-3">Set control</p>
-                <button
-                  onClick={() => {
-                    if (match?.sets?.length < 5) {
-                      const newSets = {
-                        sets: [...match.sets, { id: match?.sets?.length + 1, score: [0, 0] }],
-                        game_p1: 0,
-                        game_p2: 0,
-                      };
-                      console.log(newSets);
-                      setGame_p1(0);
-                      setGame_p2(0);
-                      setMatch((prev) => ({ ...prev, ...newSets }));
-                      updateRow(newSets);
-                    }
-                  }}
-                  className={`text-5xl`}>
-                  New Set
-                </button>
-                <button
-                  disabled={match?.sets?.length <= 1}
-                  onClick={() => {
-                    if (match?.sets?.length > 1) {
-                      const pop = [...match.sets];
-                      pop.pop();
-                      const newSets = {
-                        sets: pop,
-                        game_p1: 0,
-                        game_p2: 0,
-                      };
-                      setGame_p1(0);
-                      setGame_p2(0);
-                      setMatch((prev) => ({ ...prev, ...newSets }));
-                      updateRow(newSets);
-                    }
-                  }}
-                  className={`text-5xl`}>
-                  Remove Set
-                </button>
-              </div>
-            </div>
-          </div>
-          <div className="w-full flex flex-col text-5xl gap-2 bg-black  p-4 rounded-lg items-center">
-            <h5 className="underline">Game Score control</h5>
-            <div className="flex gap-4 items-center bg-primary p-4 rounded-lg text-black">
-              <p>Pair1</p>
-              {[0, 15, 30, 40, "AD"].map((score, i) => (
-                <button
-                  onClick={() => {
-                    setGame_p1(score);
-                    updateGameScore({ game_p1: score, game_p2 });
-                  }}
-                  key={`pair1_${score}`}>
-                  {score}
-                </button>
-              ))}
-              <button
-                className="flex items-center"
-                onClick={() => {
-                  setGame_p1((prev) => prev + 1);
-                  updateGameScore({ game_p1: parseInt(game_p1) + 1, game_p2 });
-                }}>
-                <PlusIcon className="w-4 h-4 text-black stroke-black stroke-2" />1
-              </button>
-            </div>
-            <div className="flex gap-4 items-center bg-secondary p-4 rounded-lg text-black">
-              <p>Pair2</p>
-              {[0, 15, 30, 40, "AD"].map((score, i) => (
-                <button
-                  onClick={() => {
-                    setGame_p2(score);
-                    updateGameScore({ game_p2: score, game_p1 });
-                  }}
-                  key={`pair2_${score}`}>
-                  {score}
-                </button>
-              ))}
-              <button
-                className="flex items-center"
-                onClick={() => {
-                  setGame_p2((prev) => prev + 1);
-                  updateGameScore({ game_p2: parseInt(game_p2) + 1, game_p1 });
-                }}>
-                <PlusIcon className="w-4 h-4 text-black stroke-black stroke-2" />1
-              </button>
-            </div>
-            <div className="flex items-center gap-4">
-              <button
-                onClick={() => {
-                  updateGameScore({ game_p1, game_p2 });
-                }}>
-                Update
-              </button>
-              <button
-                onClick={() => {
-                  setGame_p1(0);
-                  setGame_p2(0);
-                  updateGameScore({ game_p1: 0, game_p2: 0 });
-                }}>
-                Reset
-              </button>
-            </div>
-          </div>
-        </div>
+        <MatchControls
+          match={match}
+          handleMatchReset={handleMatchReset}
+          handleCreateNewSet={handleCreateNewSet}
+          handleRemoveSet={handleRemoveSet}
+          handlePairGameScore={handlePairGameScore}
+          handleResetGameScore={handleResetGameScore}
+          handleStopWatchAction={handleStopWatchAction}
+        />
       </div>
     ) : (
       <div className="flex flex-col m-auto text-5xl gap-4">
