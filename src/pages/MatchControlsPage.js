@@ -147,8 +147,8 @@ export default function MatchControlsPage() {
   const handleMatchReset = () => {
     const newMatchData = { ...newMatch };
     resetGames();
-    setMatch(newMatchData);
     updateRow(newMatchData);
+    setMatch(newMatchData);
   };
 
   const handleCreateNewSet = () => {
@@ -198,7 +198,7 @@ export default function MatchControlsPage() {
   };
   return loaded ? (
     !error ? (
-      <div className={`${match.id ? "opacity-100" : "opacity-0"} py-10 transition-all`}>
+      <div className={`${loaded ? "opacity-100" : "opacity-0"} py-10 transition-all`}>
         <div data-sets={match?.sets?.length} className="score-grid w-full">
           <div className="col-span-2 round max-w-xs  ">
             <input

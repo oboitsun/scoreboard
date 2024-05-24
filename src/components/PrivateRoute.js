@@ -8,7 +8,7 @@ export default function PrivateRoutes() {
   const access_token = sessionStorage.getItem("scoreboard-access-token");
   const refresh_token = cookie?.refresh_token;
   console.log({ cookie, access_token, refresh_token });
-  return access_token ? (
+  return !access_token ? (
     <Outlet />
   ) : (
     <Navigate to={refresh_token ? RELOGIN_PAGE : SIGNIN_PAGE} replace state={{ from: location }} />

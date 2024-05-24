@@ -3,15 +3,18 @@ import React from "react";
 
 export default function CountryFlagDisplay({ currentCountry }) {
   return (
-    <div className={`flag  flex-shrink-0 cursor-pointer ${currentCountry ? "" : "bg-slate-500"}`}>
+    <div
+      className={`flag  flex-shrink-0 items-stretch cursor-pointer ${
+        currentCountry ? "" : "bg-slate-500"
+      }`}>
       {currentCountry ? (
         <img
-          className="w-full h-full object-contain"
+          className="w-full h-[52px] object-contain"
           src={findFlagUrlByIso2Code(currentCountry)}
           alt={currentCountry}
         />
       ) : (
-        <></>
+        <div className="h-12 w-full"></div>
       )}
     </div>
   );

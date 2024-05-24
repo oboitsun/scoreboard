@@ -32,6 +32,6 @@ export const newMatch = {
   ],
   game_p1: "0",
   finished: null,
-  start_timer: null,
+  timer_status: null,
   game_p2: "0",
 };
