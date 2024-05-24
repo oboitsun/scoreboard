@@ -12,9 +12,12 @@ export default function MatchPage() {
   const [match, setMatch] = useState({});
   useEffect(() => {
     async function getTodos() {
-      let { data: scoreboard, error } = await supabase.from("scoreboard").select("*");
+      let { data: scoreboard, error } = await supabase
+        .from("scoreboard")
+        .select()
+        .eq("id", matchId ?? 1);
       console.log(scoreboard);
-      if (scoreboard.length > 0) {
+      if (scoreboard?.length > 0) {
         setMatch(scoreboard[0]);
       }
     }
@@ -28,7 +31,7 @@ export default function MatchPage() {
         { event: "*", schema: "public", table: "scoreboard", filter: `id=eq.${matchId ?? 1}` },
         (payload) => {
           if (!payload.errors) {
-            setMatch(payload.new);
+            setMatch((prev) => ({ ...prev, ...payload.new }));
           }
         }
       )
