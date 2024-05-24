@@ -8,7 +8,7 @@ import { newMatch } from "../utils/dummyData";
 import { handleChangeServeState, handleFlagChange, handleNameChange } from "../utils/functions";
 import { supabase } from "../utils/supabase";
 
-export default function Match() {
+export default function MatchControlsPage() {
   const { matchId } = useParams();
   const [match, setMatch] = useState({});
   const [game_p1, setGame_p1] = useState(0);

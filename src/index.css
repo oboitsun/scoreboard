@@ -9,21 +9,21 @@
   font-family: 'Elza Trial';
   font-style: normal;
   font-weight: 500;
-  src: local('Elza Trial Condensed Medium'), url('ElzaTrial-CondMedium.woff') format('woff');
+  src: local('Elza_Condensed_Medium'), url('Elza_Condensed_Medium.otf') format('opentype');
 }
 
 @font-face {
   font-family: 'Elza Trial';
   font-style: normal;
   font-weight: 800;
-  src: local('Elza Trial Condensed Semibold'), url('ElzaTrial-CondSemibold.woff') format('woff');
+  src: local('Elza_Condensed_Semibold.otf'), url('Elza_Condensed_Semibold.otf') format('opentype');
 }
 
 @font-face {
   font-family: 'Elza Trial';
   font-style: normal;
   font-weight: 700;
-  src: local('Elza Trial Condensed Bold'), url('ElzaTrial-CondBold.woff') format('woff');
+  src: local('Elza_Condensed_Bold.otf'), url('Elza_Condensed_Bold.otf') format('opentype');
 }
 
 
@@ -31,10 +31,19 @@
   font-family: 'Elza Trial';
   font-style: normal;
   font-weight: 900;
-  src: local('Elza Trial Condensed Black'), url('ElzaTrial-CondBlack.woff') format('woff');
+  src: local('Elza_Condensed_Black.otf'), url('Elza_Condensed_Black.otf') format('opentype');
 }
 
 html {
   font-family: 'Elza Trial', sans-serif;
   color: white;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: background-color 5000s;
+  -webkit-text-fill-color: white !important;
+  color: white !important;
 }
