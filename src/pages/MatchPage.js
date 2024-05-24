@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import howden_logo from "../assets/howden-logo.svg";
 import lignator_logo from "../assets/lignator-logo.png";
 import PlayerRow from "../components/PlayerRow";
@@ -7,6 +8,7 @@ import TimeWatch from "../components/Time";
 import { supabase } from "../utils/supabase";
 import "./Home.scss";
 export default function MatchPage() {
+  const { matchId } = useParams();
   const [match, setMatch] = useState({});
   useEffect(() => {
     async function getTodos() {
@@ -23,7 +25,7 @@ export default function MatchPage() {
       .channel("custom-filter-channel")
       .on(
         "postgres_changes",
-        { event: "*", schema: "public", table: "scoreboard", filter: "id=eq.1" },
+        { event: "*", schema: "public", table: "scoreboard", filter: `id=eq.${matchId ?? 1}` },
         (payload) => {
           if (!payload.errors) {
             setMatch(payload.new);
