@@ -9,7 +9,8 @@ import { handleChangeServeState, handleFlagChange, handleNameChange } from "../u
 import { supabase } from "../utils/supabase";
 
 export default function MatchControlsPage() {
-  const { matchId } = useParams();
+  const { screenId } = useParams();
+
   const [match, setMatch] = useState({});
   const [game_p1, setGame_p1] = useState(0);
   const [game_p2, setGame_p2] = useState(0);
@@ -20,7 +21,7 @@ export default function MatchControlsPage() {
       const { data: row, error } = await supabase
         .from(from ?? "scoreboard")
         .select("*")
-        .eq("id", matchId)
+        .eq("id", screenId)
         .single();
 
       if (error) {
@@ -30,7 +31,6 @@ export default function MatchControlsPage() {
         return;
       }
 
-      console.log("Row:", row);
       setMatch(row);
       setGame_p1(row.game_p1);
       setGame_p2(row.game_p2);
@@ -96,11 +96,13 @@ export default function MatchControlsPage() {
   };
   const updateRow = useCallback(
     async (newState) => {
+      console.log(newState);
       try {
         const { data, error } = await supabase
           .from("scoreboard")
           .update(newState ?? match)
-          .eq("id", matchId);
+          .eq("id", screenId)
+          .select();
 
         if (error) {
           console.error("Error updating row:", error.message);
@@ -113,14 +115,14 @@ export default function MatchControlsPage() {
         console.error("Error updating row:", error.message);
       }
     },
-    [match, matchId]
+    [match, screenId]
   );
   const updateGameScore = async ({ game_p1, game_p2 }) => {
     try {
       const { data, error } = await supabase
         .from("scoreboard")
         .update({ game_p1, game_p2 })
-        .eq("id", matchId);
+        .eq("id", screenId);
       if (error) {
         console.error("Error updating row:", error.message);
         return;
