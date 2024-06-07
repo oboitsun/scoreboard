@@ -21,7 +21,7 @@ export default function PlayerRowControl({
       />
       <input
         placeholder="Player Name"
-        onChange={(e) => {
+        onBlur={(e) => {
           handlePlayerNameChange(pair, player, e.target.value);
         }}
         className="flex-shrink-0 bg-white/10 text-5xl my-0.5 px-2 player-name w-1/2 flex-grow"
