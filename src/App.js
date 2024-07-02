@@ -1,13 +1,12 @@
-import "core-js/actual";
 import { CookiesProvider } from "react-cookie";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import PrivateRoutes from "./components/PrivateRoute";
 import {
   RELOGIN_PAGE,
+  SCREENS_PAGE,
   SCREEN_CONTROL_PAGE,
   SCREEN_PAGE,
-  SCREENS_PAGE,
   SIGNIN_PAGE,
   SIGNUP_PAGE,
 } from "./constants/index";

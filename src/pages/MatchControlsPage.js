@@ -1,14 +1,18 @@
 import { ArrowPathIcon } from "@heroicons/react/20/solid";
-import React, { useCallback, useEffect, useState } from "react";
+import { debounce } from "lodash";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import MatchControls from "../components/MatchControls";
 import PlayerRowControl from "../components/PlayerRowControl";
 import SetsRowControl from "../components/SetsRowControl";
+import ScoreLogo from "../components/UI/ScoreLogo";
 import { newMatch } from "../utils/dummyData";
 import { handleChangeServeState, handleFlagChange, handleNameChange } from "../utils/functions";
 import { supabase } from "../utils/supabase";
-
+import "./Home.scss";
 export default function MatchControlsPage() {
+  const gameRef = useRef();
+  const setRef = useRef();
   const { screenId } = useParams();
 
   const [match, setMatch] = useState({});
@@ -45,13 +49,40 @@ export default function MatchControlsPage() {
   useEffect(() => {
     fetchRowById("scoreboard");
   }, []);
+  const updateRow = useCallback(
+    async (newState) => {
+      console.log(newState);
+      try {
+        const { data, error } = await supabase
+          .from("scoreboard")
+          .update(newState ?? match)
+          .eq("id", screenId)
+          .select();
+
+        if (error) {
+          console.error("Error updating row:", error.message);
+          return;
+        }
+
+        console.log("Row updated successfully:", data);
+        // Do something with the updated row data
+      } catch (error) {
+        console.error("Error updating row:", error.message);
+      }
+    },
+    [match, screenId]
+  );
+  const debouncedUpdateRow = useCallback(
+    debounce((val) => updateRow(val), 1500),
+    []
+  );
   const handlePlayerNameChange = (pair, player, val) => {
     const newPairState = handleNameChange(match?.[`pair${pair}`], pair, player, val);
     setMatch((prev) => ({
       ...prev,
       ...newPairState,
     }));
-    updateRow(newPairState);
+    debouncedUpdateRow(newPairState);
   };
   const handleCountryChange = (iso2, pair, player) => {
     const newPairState = handleFlagChange(match?.[`pair${pair}`], pair, player, iso2);
@@ -94,29 +125,7 @@ export default function MatchControlsPage() {
       return { ...prevMatch, sets: newSets };
     });
   };
-  const updateRow = useCallback(
-    async (newState) => {
-      console.log(newState);
-      try {
-        const { data, error } = await supabase
-          .from("scoreboard")
-          .update(newState ?? match)
-          .eq("id", screenId)
-          .select();
 
-        if (error) {
-          console.error("Error updating row:", error.message);
-          return;
-        }
-
-        console.log("Row updated successfully:", data);
-        // Do something with the updated row data
-      } catch (error) {
-        console.error("Error updating row:", error.message);
-      }
-    },
-    [match, screenId]
-  );
   const updateGameScore = async ({ game_p1, game_p2 }) => {
     try {
       const { data, error } = await supabase
@@ -132,9 +141,13 @@ export default function MatchControlsPage() {
       console.error("Error updating row:", error.message);
     }
   };
+  const handleTitleName = (val) => {
+    setMatch((prev) => ({ ...prev, title: val }));
+    debouncedUpdateRow({ title: val });
+  };
   const hanleRoundNameChange = (val) => {
     setMatch((prev) => ({ ...prev, round: val }));
-    updateRow({ round: val });
+    debouncedUpdateRow({ round: val });
   };
   const resetGames = () => {
     setGame_p1(0);
@@ -200,9 +213,19 @@ export default function MatchControlsPage() {
   };
   return loaded ? (
     !error ? (
-      <div className={`${loaded ? "opacity-100" : "opacity-0"} py-10 transition-all`}>
-        <div data-sets={match?.sets?.length} className="score-grid w-full">
-          <div className="col-span-2 round max-w-xs  ">
+      <div
+        className={`${
+          loaded ? "opacity-100" : "opacity-0"
+        } flex flex-col justify-evenly  h-1/2 flex-grow transition-all`}>
+        <div className="flex justify-between ">
+          <div className=" round max-w-lg flex flex-col gap-2 ">
+            <input
+              value={match?.title}
+              onChange={(e) => {
+                handleTitleName(e.target.value);
+              }}
+              className="text-left  bg-white/10 outline-none uppercase px-4 "
+            />
             <input
               value={match?.round}
               onChange={(e) => {
@@ -211,12 +234,21 @@ export default function MatchControlsPage() {
               className="text-left  bg-white/10 outline-none uppercase px-4 "
             />
           </div>
+          <div className="competition-logo">
+            <ScoreLogo />
+          </div>
+        </div>
+        <div data-sets={match?.sets?.length} className="score-grid w-full">
+          <div className="col-span-2 round max-w-xs  "></div>
 
           <div className="sets">
             {[1, 2, 3, 4, 5].map((set, i) => {
               const isExist = match?.sets?.[i]?.score;
               return isExist ? (
-                <button key={set} className={`set`}>
+                <button
+                  {...(match?.sets?.length - 1 ? { style: { width: setRef?.current?.width } } : {})}
+                  key={set}
+                  className={`set`}>
                   set{set}
                 </button>
               ) : (
@@ -224,11 +256,13 @@ export default function MatchControlsPage() {
               );
             })}
           </div>
-          <div className="game">game</div>
+          <div className="game">
+            <span>game</span>
+          </div>
         </div>
 
         <div className="score-grid w-full">
-          <div className="col-span-2 flex flex-col justify-center  max-w-lg">
+          <div className="col-span-2 flex flex-col justify-center  max-w-[40vw]">
             <PlayerRowControl
               handlePlayerNameChange={handlePlayerNameChange}
               handlePlayerServeChange={handlePlayerServeChange}
@@ -250,10 +284,12 @@ export default function MatchControlsPage() {
           <div className="sets">
             <SetsRowControl sets={match?.sets} pair={1} handleChange={handleSetScoreChange} />
           </div>
-          <div className="game-score">{game_p1}</div>
+          <div ref={gameRef} className="game-score">
+            {game_p1}
+          </div>
         </div>
         <div className="score-grid w-full">
-          <div className="col-span-2 flex flex-col justify-center max-w-lg ">
+          <div className="col-span-2 flex flex-col justify-center max-w-[40vw] ">
             <PlayerRowControl
               handlePlayerNameChange={handlePlayerNameChange}
               handlePlayerServeChange={handlePlayerServeChange}
@@ -271,7 +307,7 @@ export default function MatchControlsPage() {
               pair={2}
             />
           </div>
-          <div className="sets">
+          <div ref={setRef} className="sets">
             <SetsRowControl sets={match?.sets} pair={2} handleChange={handleSetScoreChange} />
           </div>
 

@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
-import bg from "../assets/bg.jpeg";
 export default function ControlLayout() {
   const [password, setPassword] = useState("");
   const [getThrough, setGetThrough] = useState(false);
   const [error, setError] = useState("");
   return (
-    <div className="bg-black w-full min-h-screen relative flex flex-col items-center  font-black leading-none overflow-hidden">
-      <img className="absolute z-0 top-0 left-0 w-full h-full object-cover" src={bg} alt="Back" />
+    <div className="bg-[#292929] w-full min-h-screen relative flex flex-col items-center  font-black leading-none overflow-hidden">
       <div className="w-[95%] relative z-10 py-10 flex flex-col h-1/2 flex-grow">
         {/* <div className="w-full flex items-start justify-between">
           <div className="flex flex-col gap-2.5 items-start">

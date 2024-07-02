@@ -12,7 +12,7 @@ export default function PlayerRowControl({
   playerData,
 }) {
   return (
-    <div className="flex gap-6 items-center w-full">
+    <div className="flex items-center w-full">
       <CountryFlagPicker
         currentCountry={playerData?.country}
         handlePick={(iso2) => {
@@ -21,10 +21,10 @@ export default function PlayerRowControl({
       />
       <input
         placeholder="Player Name"
-        onBlur={(e) => {
+        onChange={(e) => {
           handlePlayerNameChange(pair, player, e.target.value);
         }}
-        className="flex-shrink-0 bg-white/10 text-5xl my-0.5 px-2 player-name w-1/2 flex-grow"
+        className=" bg-white/10 px-1 player-name w-1/2 flex-grow "
         value={playerData?.name}
       />
       <ServeRadio

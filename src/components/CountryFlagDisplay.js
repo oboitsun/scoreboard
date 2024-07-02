@@ -9,12 +9,12 @@ export default function CountryFlagDisplay({ currentCountry }) {
       }`}>
       {currentCountry ? (
         <img
-          className="w-full h-[52px] object-contain"
+          className="w-full h-[3vw] object-contain"
           src={findFlagUrlByIso2Code(currentCountry)}
           alt={currentCountry}
         />
       ) : (
-        <div className="h-12 w-full"></div>
+        <div className="h-[3vw] w-full"></div>
       )}
     </div>
   );

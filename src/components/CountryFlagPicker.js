@@ -7,7 +7,7 @@ export default function CountryFlagPicker({ currentCountry, handlePick }) {
   const [searchStr, setSearchStr] = useState("");
 
   return (
-    <div className="flag flex-shrink-0 relative">
+    <div className=" flex-shrink-0 relative">
       <button
         onClick={() => {
           setShow(!show);
