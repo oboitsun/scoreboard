@@ -73,7 +73,7 @@ export default function MatchControlsPage() {
     [match, screenId]
   );
   const debouncedUpdateRow = useCallback(
-    debounce((val) => updateRow(val), 1500),
+    debounce((val) => updateRow(val), 500),
     []
   );
   const handlePlayerNameChange = (pair, player, val) => {
