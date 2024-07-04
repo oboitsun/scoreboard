@@ -7,7 +7,7 @@ export default function PrivateRoutes() {
   const [cookie] = useCookies("refresh_token");
   const access_token = sessionStorage.getItem("scoreboard-access-token");
   const refresh_token = cookie?.refresh_token;
-  console.log({ cookie, access_token, refresh_token });
+
   return !access_token ? (
     <Outlet />
   ) : (
