@@ -11,14 +11,15 @@ export default function MatchPage() {
   useEffect(() => {
     import("./Home.scss");
   }, []);
-  const { matchId } = useParams();
+  const params = useParams();
   const [match, setMatch] = useState({});
   useEffect(() => {
+    console.log(params);
     async function getTodos() {
       let { data: scoreboard, error } = await supabase
         .from("scoreboard")
         .select()
-        .eq("id", matchId ?? 1);
+        .eq("id", params?.screenId ?? 1);
       console.log(scoreboard);
       if (scoreboard?.length > 0) {
         setMatch(scoreboard[0]);
@@ -31,7 +32,12 @@ export default function MatchPage() {
       .channel("custom-filter-channel")
       .on(
         "postgres_changes",
-        { event: "*", schema: "public", table: "scoreboard", filter: `id=eq.${matchId ?? 1}` },
+        {
+          event: "*",
+          schema: "public",
+          table: "scoreboard",
+          filter: `id=eq.${params?.screenId ?? 1}`,
+        },
         (payload) => {
           if (!payload.errors) {
             setMatch((prev) => ({ ...prev, ...payload.new }));

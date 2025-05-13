@@ -145,6 +145,11 @@ export default function MatchControlsPage() {
     setMatch((prev) => ({ ...prev, title: val }));
     debouncedUpdateRow({ title: val });
   };
+
+  const handleMatchTitleName = (val) => {
+    setMatch((prev) => ({ ...prev, match_title: val }));
+    debouncedUpdateRow({ match_title: val });
+  };
   const hanleRoundNameChange = (val) => {
     setMatch((prev) => ({ ...prev, round: val }));
     debouncedUpdateRow({ round: val });
@@ -227,9 +232,9 @@ export default function MatchControlsPage() {
               className="text-left  bg-white/10 outline-none uppercase px-4 "
             />
             <input
-              value={match?.round}
+              value={match?.match_title}
               onChange={(e) => {
-                hanleRoundNameChange(e.target.value);
+                handleMatchTitleName(e.target.value);
               }}
               className="text-left  bg-white/10 outline-none uppercase px-4 "
             />
@@ -239,7 +244,15 @@ export default function MatchControlsPage() {
           </div>
         </div>
         <div data-sets={match?.sets?.length} className="score-grid w-full">
-          <div className="col-span-2 round max-w-xs  "></div>
+          <div className="col-span-2 round max-w-xs  ">
+            <input
+              value={match?.round}
+              onChange={(e) => {
+                hanleRoundNameChange(e.target.value);
+              }}
+              className="text-left  bg-white/10 outline-none uppercase px-4 "
+            />
+          </div>
 
           <div className="sets">
             {[1, 2, 3, 4, 5].map((set, i) => {
