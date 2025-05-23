@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import PlayerRow from "../components/PlayerRow";
 import SetsRowControl from "../components/SetsRowControl";
@@ -67,7 +67,7 @@ export default function MatchPage() {
           </div>
         </div>
         <div className="w-full flex flex-col pt-16 flex-grow">
-          {true && (
+          {match && (
             <>
               <div className="score-grid w-full">
                 <div className="col-span-2 round text-left">{match?.round}</div>
