@@ -245,7 +245,6 @@ export default function MatchControlsPage() {
         </div>
         <div data-sets={match?.sets?.length} className="score-grid w-full">
           <div className="col-span-2 round max-w-xs  ">
-            hey
             <input
               value={match?.round}
               onChange={(e) => {
